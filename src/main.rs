@@ -17,22 +17,16 @@ fn main() {
         let line = line.expect("Could not read line from standard in");
 
         let captures = memory_regex.captures(line.as_str());
+
         match captures {
             Some(v) => {
                 match v.get(1) {
-                    Some(m) => {
-                        println!("{}", m.as_str());
-                        match m.as_str().parse::<f32>() {
-                            Ok(v) => {
-                                ram_usage.push(v);
-                                println!("parsing ok")
-                            }
-                            Err(e) => {
-                                println!("Parsed: {}", m.as_str());
-                                println!("{:?}", e)
-                            }
+                    Some(m) => match m.as_str().parse::<f32>() {
+                        Ok(v) => {
+                            ram_usage.push(v);
                         }
-                    }
+                        Err(_) => (),
+                    },
                     None => (),
                 };
             }
