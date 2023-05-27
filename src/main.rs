@@ -43,22 +43,17 @@ fn main() {
         line_count += 1;
         let line = line.expect("Could not read line from standard in");
 
-        let captures = memory_regex.captures(line.as_str());
-
-        match captures {
-            Some(v) => {
-                match v.get(1) {
-                    Some(m) => match m.as_str().parse::<i32>() {
-                        Ok(v) => {
-                            ram_usage.push(v);
-                        }
-                        Err(_) => (),
-                    },
-                    None => (),
-                };
+        if let Some(captures) = memory_regex.captures(line.as_str()) {
+            if let Some(m) = captures.get(1) {
+                match m.as_str().parse::<i32>() {
+                    Ok(v) => {
+                        ram_usage.push(v);
+                    }
+                    Err(_) => (),
+                }
             }
-            None => (),
         }
+
         let captures = run_time_regex.captures(line.as_str());
         match captures {
             Some(v) => {
